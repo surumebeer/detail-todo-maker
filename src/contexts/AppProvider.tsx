@@ -2,50 +2,33 @@ import {
   createContext,
   useReducer,
   useContext,
-  useState,
   ReactNode,
   Dispatch,
-  useEffect,
 } from "react";
 
-import {
-  rootReducer,
-  initialAppState,
-  AppState,
-  AppAction,
-} from "./reducers/rootReducer";
+import { rootReducer, initialAppState } from "./reducers/rootReducer";
 
-import { loadDBData, saveDBData, DB_SCHEMA_NAME } from "../db";
+import { AppAction, AppStateContextValue } from "./reducers/types";
 
-const AppStateContext = createContext<AppState | undefined>(undefined);
+import { useAppPersistence } from "./useAppPersistance";
+
+export { MAIN_TASK_ACTION } from "./reducers/mainTaskReducer/action";
+export { SUB_TASK_ACTION } from "./reducers/subTaskReducer/action";
+
+const AppStateContext = createContext<AppStateContextValue | undefined>(
+  undefined
+);
 const AppDispatchContext = createContext<Dispatch<AppAction> | undefined>(
   undefined
 );
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(rootReducer, initialAppState);
-  const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
-    loadDBData<AppState>(DB_SCHEMA_NAME).then((loaded) => {
-      if (loaded?.task) {
-        dispatch({ type: "INIT_TASKS", payload: loaded.task.tasks });
-      }
-      if (loaded?.task) {
-        dispatch({ type: "INIT_SUB_TASKS", payload: loaded.subTask.subTasks });
-      }
-      setHydrated(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (hydrated) {
-      saveDBData(DB_SCHEMA_NAME, state);
-    }
-  }, [state, hydrated]);
+  const hydrated = useAppPersistence(state, dispatch);
 
   return (
-    <AppStateContext.Provider value={state}>
+    <AppStateContext.Provider value={{ state, hydrated }}>
       <AppDispatchContext.Provider value={dispatch}>
         {children}
       </AppDispatchContext.Provider>

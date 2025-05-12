@@ -1,0 +1,6 @@
+export const SUB_TASK_ACTION = {
+  ADD: "ADD_SUB_TASK",
+  UPDATE: "UPDATE_SUB_TASK",
+  DELETE: "DELETE_SUB_TASK",
+  INIT: "INIT_SUB_TASKS",
+} as const;

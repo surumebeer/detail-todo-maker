@@ -1,5 +1,5 @@
 import { SubTask } from "@/types/Task";
-import { useAppDispatch } from "@/contexts/AppProvider";
+import { SUB_TASK_ACTION, useAppDispatch } from "@/contexts/AppProvider";
 
 type Props = {
   subtask: SubTask;
@@ -10,7 +10,7 @@ export const SubTaskItem = ({ subtask }: Props) => {
 
   const toggle = () => {
     dispatch({
-      type: "UPDATE_SUB_TASK",
+      type: SUB_TASK_ACTION.UPDATE,
       payload: {
         ...subtask,
         completed: !subtask.completed,
@@ -21,7 +21,7 @@ export const SubTaskItem = ({ subtask }: Props) => {
 
   const deleteSubTask = () => {
     dispatch({
-      type: "DELETE_SUB_TASK",
+      type: SUB_TASK_ACTION.DELETE,
       payload: subtask,
     });
   };

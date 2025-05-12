@@ -1,12 +1,12 @@
-import { Task } from "@/types/Task";
+import { MainTask } from "@/types/Task";
 import { SubTaskList } from "@/components/SubTaskList";
 import { SubTaskInput } from "../SubTaskInput";
 
 type Props = {
-  task: Task;
+  mainTask: MainTask;
 };
 
-export const TaskItem = ({ task }: Props) => {
+export const TaskItem = ({ mainTask }: Props) => {
   return (
     <div
       style={{
@@ -15,10 +15,10 @@ export const TaskItem = ({ task }: Props) => {
         marginBottom: "12px",
       }}
     >
-      <h3>{task.title}</h3>
-      <p>{task.description}</p>
-      <SubTaskInput task={task} />
-      <SubTaskList parentId={null} mainTaskId={task.id} />
+      <h3>{mainTask.title}</h3>
+      <p>{mainTask.description}</p>
+      <SubTaskInput task={mainTask} />
+      <SubTaskList parentId={null} mainTaskId={mainTask.id} />
     </div>
   );
 };

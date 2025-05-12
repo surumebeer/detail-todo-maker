@@ -25,7 +25,7 @@ export type SubTask = {
 };
 
 // メインタスク
-export type Task = {
+export type MainTask = {
   id: string;
   title: string;
   description: string;

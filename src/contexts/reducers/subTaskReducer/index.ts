@@ -1,28 +1,18 @@
-import { SubTask } from "@/types/Task";
+import { SubTaskAction, SubTaskState } from "./types";
 
-import { getAllDescendantSubtaskIds } from "@/lib/getAllDescendantSubtaskIds";
-
-export type SubTaskState = {
-  subTasks: Record<string, SubTask>;
-};
+import { SUB_TASK_ACTION } from "./action";
 
 const initialSubTaskState: SubTaskState = {
   subTasks: {},
 };
-
-export type SubTaskAction =
-  | { type: "ADD_SUB_TASK"; payload: SubTask }
-  | { type: "UPDATE_SUB_TASK"; payload: SubTask }
-  | { type: "DELETE_SUB_TASK"; payload: SubTask }
-  | { type: "INIT_SUB_TASKS"; payload: Record<string, SubTask> };
 
 const subTaskReducer = (
   state: SubTaskState,
   action: SubTaskAction
 ): SubTaskState => {
   switch (action.type) {
-    case "ADD_SUB_TASK":
-    case "UPDATE_SUB_TASK":
+    case SUB_TASK_ACTION.ADD:
+    case SUB_TASK_ACTION.UPDATE:
       return {
         ...state,
         subTasks: {
@@ -30,7 +20,7 @@ const subTaskReducer = (
           [action.payload.id]: action.payload,
         },
       };
-    case "DELETE_SUB_TASK": {
+    case SUB_TASK_ACTION.DELETE: {
       const { id } = action.payload;
       const newSubTasks = { ...state.subTasks };
       if (action.payload.parentId === null) {
@@ -39,7 +29,7 @@ const subTaskReducer = (
       }
       return { ...state, subTasks: newSubTasks };
     }
-    case "INIT_SUB_TASKS":
+    case SUB_TASK_ACTION.INIT:
       return { ...state, subTasks: action.payload };
     default:
       return state;

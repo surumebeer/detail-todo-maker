@@ -1,31 +1,19 @@
-import {
-  initialTaskState,
-  taskReducer,
-  TaskState,
-  TaskAction,
-} from "./taskReducer";
-import {
-  initialSubTaskState,
-  subTaskReducer,
-  SubTaskState,
-  SubTaskAction,
-} from "./subTaskReducer";
+import { initialMainTaskState, mainTaskReducer } from "./mainTaskReducer";
+import { MainTaskAction } from "./mainTaskReducer/types";
 
-export type AppState = {
-  task: TaskState;
-  subTask: SubTaskState;
-};
+import { initialSubTaskState, subTaskReducer } from "./subTaskReducer";
+import { SubTaskAction } from "./subTaskReducer/types";
 
-export type AppAction = TaskAction | SubTaskAction;
+import { AppAction, AppState } from "./types";
 
 export const initialAppState: AppState = {
-  task: initialTaskState,
+  mainTask: initialMainTaskState,
   subTask: initialSubTaskState,
 };
 
 export const rootReducer = (state: AppState, action: AppAction): AppState => {
   return {
-    task: taskReducer(state.task, action as unknown as TaskAction),
-    subTask: subTaskReducer(state.subTask, action as unknown as SubTaskAction),
+    mainTask: mainTaskReducer(state.mainTask, action as MainTaskAction),
+    subTask: subTaskReducer(state.subTask, action as SubTaskAction),
   };
 };

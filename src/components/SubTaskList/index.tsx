@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const SubTaskList = ({ parentId, mainTaskId }: Props) => {
-  const { subTask } = useAppState();
+  const { subTask } = useAppState().state;
 
   const subtasks =
     parentId === null

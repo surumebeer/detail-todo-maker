@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { useAppDispatch } from "@/contexts/AppProvider";
+import { SUB_TASK_ACTION, useAppDispatch } from "@/contexts/AppProvider";
 import { v4 as uuidv4 } from "uuid";
 
-import { Task, SubTask } from "@/types/Task";
+import { MainTask, SubTask } from "@/types/Task";
 
 type Props =
   | {
       task: SubTask;
     }
   | {
-      task: Task;
+      task: MainTask;
     };
 
-function isArgsSubTask(task: Task | SubTask): task is SubTask {
+function isArgsSubTask(task: MainTask | SubTask): task is SubTask {
   return "mainTaskId" in task;
 }
 
@@ -44,8 +44,7 @@ export const SubTaskInput = ({ task }: Props) => {
           updatedAt: new Date().toISOString(),
         };
 
-    // Dispatch action to add subtask
-    dispatch({ type: "ADD_SUB_TASK", payload: newSubTask });
+    dispatch({ type: SUB_TASK_ACTION.ADD, payload: newSubTask });
 
     setInput("");
   };
